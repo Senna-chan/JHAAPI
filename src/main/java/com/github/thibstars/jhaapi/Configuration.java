@@ -8,6 +8,8 @@ import com.github.thibstars.jhaapi.internal.interceptors.RequestTokenInterceptor
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+
+import com.github.thibstars.jhaapi.internal.interceptors.RetryInterceptor;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,7 @@ public class Configuration {
         this.longLivedAccessToken = builder.longLivedAccessToken;
         this.okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new RequestTokenInterceptor(this))
+                .addInterceptor(new RetryInterceptor(4,500))
                 .build();
         this.objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
